@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODOList</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <style type="text/css">
+     .done{
+         text-decoration: line-through;
+     }
+
+    </style>
+
+</head>
+<body>
+    <h1 id="time" class="text">TODOリスト</h1>
+
+    <button id="resetTime"class="text button-wrapper">タイマーストップ</button>
+
+    <div class="text button-wrapper">
+        <input id="new-todo" type="text" class="text task-wrapper">    <button id="add-button" class="task-wrapper button-wrapper">add</button> 
+    </div>
+
+ 
+
+   
+
+    <ul id="set_time" class="text task-wrapper"></ul>
+
+   
+        <table id="task_list" class="text task-wrapper"></table>
+    
+
+ <script>
+    const time  = document.querySelector('#time');
+    const sec   = document.querySelector('#sec');
+    const start = document.querySelector('#start');
+    const sound = document.querySelector('#sound');
+    const resetButton = document.querySelector('#resetTime');
+    let count   = 0;
+    const s     = 1000;
+
+
+     
+     const button = document.getElementById('add-button');
+    button.addEventListener('click',()=>{
+
+//  クリック後計測開始
+        const set_id = setInterval(function(){
+        count++;
+        time.innerHTML='Todo' + count + '秒経過';
+         },s);
+         console.log(count);
+
+  
+// 計測ストップ
+        resetButton.addEventListener('click',() =>{
+            clearInterval(set_id);
+            count--;
+            time.innerHTML='Todo' + 0 + '秒経過';
+            // localStorage.clear();
+            
+        
+        });
+
+
+
+
+
+
+        const input = document.getElementById('new-todo');
+        
+        const li = document.createElement('li');
+        li.innerText = input.value;
+        li.setAttribute('id','countTime'); 
+        
+      
+
+        
+
+        
+        const doneButton = document.createElement('button');
+        doneButton.innerText = 'done';
+        li.appendChild(doneButton);
+
+
+
+        doneButton.addEventListener('click',() =>{
+            const close = doneButton.closest('li');
+            close.classList.add('done');
+           
+            const key   = document.querySelector('#new-todo').value;
+            console.log(key);
+            
+            const value = count;
+           
+            console.log(value);
+            localStorage.setItem(key,value);  
+            
+           
+
+            
+        });
+
+       
+        
+
+        const ul = document.querySelector('ul');
+        ul.appendChild(li);
+    })
+
+   
+    for(let i=0; i<localStorage.length; i++){
+    const key   = localStorage.key(i);
+    const value = localStorage.getItem(key);
+    const html = '<tr><th>'+key+'</th><td>'+value+'</td></tr>';
+    $("#task_list").append("完了タスク/経過秒数"+html);
+}
+// 
+
+
+       
+  
+
+ 
+
+
+
+</script>
+
+
+</body>
+</html>
+
+<style type="text/css">
+ 
+ body{
+     background-color: #FFFF33;
+     max-width: 1500px;
+ }
+
+ .text{
+     font-size: 12px;
+     text-align: left;
+     font-weight: bold;
+ }
+ 
+.button-wrapper{
+    display: block;
+
+    
+}
+
+.task-wrapper{
+    display: block;
+   
+
+}
+
+ </style>
